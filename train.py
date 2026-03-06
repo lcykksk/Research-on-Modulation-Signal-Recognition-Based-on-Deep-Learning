@@ -1,3 +1,4 @@
+
 import os
 import sys
 import pickle
@@ -7,49 +8,51 @@ from rmldataset2016 import load_data
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 from tensorflow.keras.optimizers import Adam
-
-sys.path.append(os.path.abspath(f'/kaggle/working/AMC/1DCNN-PF')) # cant import from module starting with number
-sys.path.append(os.path.abspath(f'/kaggle/working/AMC/PET-CGDNN'))
-sys.path.append(os.path.abspath(f'/kaggle/working/AMC/IC-AMCNet'))
-sys.path.append(os.path.abspath(f'/kaggle/working/AMC/TAD'))
-from DCNNPF import DLmodel
-from CGDNet.CGDNN import CGDNN
+ 
+# os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+# sys.path.append(os.path.abspath(f'/kaggle/working/AMC/1DCNN-PF')) # cant import from module starting with number
+# sys.path.append(os.path.abspath(f'/kaggle/working/AMC/PET-CGDNN'))
+# sys.path.append(os.path.abspath(f'/kaggle/working/AMC/IC-AMCNet'))
+# sys.path.append(os.path.abspath(f'/kaggle/working/AMC/TAD'))
+# from DCNNPF import DLmodel
+# from CGDNet.CGDNN import CGDNN
 # from CLDNN.CLDNNLikeModel import CLDNNLikeModel
-import CLDNN.CLDNNLikeModel as cldnn
-import CLDNN2.CLDNNLikeModel as cldnn2
+# import CLDNN.CLDNNLikeModel as cldnn
+# import CLDNN2.CLDNNLikeModel as cldnn2
 from CNN1.CNN2Model import CNN2Model
-from CNN2.CNN2 import CNN2
-from DAE.DAE import DAE
-from DenseNet.DenseNet import DenseNet
-from GRU2.GRUModel import GRUModel
-from IC-AMCNet import ICAMC
-from LSTM2.CuDNNLSTMModel import LSTMModel
-from MCLDNN.MCLDNN import MCLDNN
-from MCNET.MCNET import MCNET
-from PETCGDNN import PETCGDNN
-from ResNet.ResNet import ResNet
-from TAD import MCLDNN_VGN
+# from CNN2.CNN2 import CNN2
+# from DAE.DAE import DAE
+# from DenseNet.DenseNet import DenseNet
+# from GRU2.GRUModel import GRUModel
+# from IC-AMCNet import ICAMC
+# from LSTM2.CuDNNLSTMModel import LSTMModel
+# from MCLDNN.MCLDNN import MCLDNN
+# from MCNET.MCNET import MCNET
+# from PETCGDNN import PETCGDNN
+# from ResNet.ResNet import ResNet
+# from TAD import MCLDNN_VGN
 
-models_dict = {'1DCNN-PF': DLmodel,
-               'CGDNet': CGDNN,
-               'CLDNN': cldnn.CLDNNLikeModel,
-               'CLDNN2': cldnn2.CLDNNLikeModel,
-               'CNN1': CNN2Model,
-               'CNN2': CNN2,
-               'DAE': DAE,
-               'DenseNet': DenseNet,
-               'GRU2': GRUModel,
-               'IC-AMCNet': ICAMC,
-               'LSTM2': LSTMModel,
-               'MCLDNN': MCLDNN,
-               'MCNET': MCNET,
-               'PET-CGDNN': PETCGDNN,
-               'ResNet': ResNet,
-               'TAD': MCLDNN_VGN.MCLDNN}
+models_dict = { 'CNN1': CNN2Model,
+            #    '1DCNN-PF': DLmodel,
+            #     'CGDNet': CGDNN,
+            #     'CLDNN': cldnn.CLDNNLikeModel,
+            #     'CLDNN2': cldnn2.CLDNNLikeModel,
+            #     'CNN2': CNN2,
+            #     'DAE': DAE,
+            #     'DenseNet': DenseNet,
+            #     'GRU2': GRUModel,
+            #     'IC-AMCNet': ICAMC,
+            #     'LSTM2': LSTMModel,
+            #     'MCLDNN': MCLDNN,
+            #     'MCNET': MCNET,
+            #     'PET-CGDNN': PETCGDNN,
+            #     'ResNet': ResNet,
+            #     'TAD': MCLDNN_VGN.MCLDNN
+                }
 
 idx = []
 for i, idx_to_load in enumerate(["train_idx", "val_idx", "test_idx"]):
-    with open(f'/kaggle/input/rml201610a-idx/{idx_to_load}.pkl', 'rb') as file:
+    with open(f'E:/study/py/final/RML2016.10a/{idx_to_load}.pkl', 'rb') as file:
         idx.append(pickle.load(file))
 (mods,snrs,lbl),(X_train,Y_train),(X_val,Y_val),(X_test,Y_test),(train_idx,val_idx,test_idx) = load_data(idx=idx)
 
@@ -125,7 +128,8 @@ def to_amp_phase(X_train,X_val,X_test,nsamples):
     X_test = np.transpose(np.array(X_test),(0,2,1))
     return (X_train,X_val,X_test)
 
-for model_, mdl in list(models_dict.items())[8:]:
+for model_, mdl in list(models_dict.items()):
+    print("in\n")
     # train_data
     X_train_, X_val_, X_test_ = X_train.copy(), X_val.copy(), X_test.copy()
     if model_ in ['GRU2']:
