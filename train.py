@@ -1,9 +1,29 @@
 
 import os
+# 优先关闭 oneDNN 避免日志干扰
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # 指定GPU序号（0为第一块）
 import sys
 import pickle
 import numpy as np
 import mltools
+
+# 再添加 GPU 检测配置
+import tensorflow as tf
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        print(f"成功识别 GPU: {[gpu.name for gpu in gpus]}")
+    except RuntimeError as e:
+        print(f"GPU 配置错误: {e}")
+else:
+    print("未找到 GPU,使用 CPU 训练（速度较慢）")
+    # 可选：打印 TF 版本和 CUDA 检测信息，辅助排查
+    print(f"TensorFlow 版本: {tf.__version__}")
+    print(f"CUDA 可用: {tf.test.is_built_with_cuda()}")
+    print(f"GPU 设备列表: {tf.config.list_logical_devices('GPU')}")
 from rmldataset2016 import load_data
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
@@ -29,10 +49,12 @@ from CNN1.CNN2Model import CNN2Model
 # from MCLDNN.MCLDNN import MCLDNN
 # from MCNET.MCNET import MCNET
 # from PETCGDNN import PETCGDNN
-# from ResNet.ResNet import ResNet
+from ResNet.ResNet import ResNet
 # from TAD import MCLDNN_VGN
+from HANet import HANest
 
-models_dict = { 'CNN1': CNN2Model,
+models_dict = { 
+                # 'CNN1': CNN2Model,
             #    '1DCNN-PF': DLmodel,
             #     'CGDNet': CGDNN,
             #     'CLDNN': cldnn.CLDNNLikeModel,
@@ -46,8 +68,9 @@ models_dict = { 'CNN1': CNN2Model,
             #     'MCLDNN': MCLDNN,
             #     'MCNET': MCNET,
             #     'PET-CGDNN': PETCGDNN,
-            #     'ResNet': ResNet,
+                'ResNet': ResNet,
             #     'TAD': MCLDNN_VGN.MCLDNN
+            #     'HANet': HANest
                 }
 
 idx = []
@@ -132,6 +155,7 @@ for model_, mdl in list(models_dict.items()):
     print("in\n")
     # train_data
     X_train_, X_val_, X_test_ = X_train.copy(), X_val.copy(), X_test.copy()
+    print(X_train)
     if model_ in ['GRU2']:
         X_train_ = X_train_.swapaxes(2, 1)
         X_val_ = X_val_.swapaxes(2, 1)
@@ -160,7 +184,7 @@ for model_, mdl in list(models_dict.items()):
         X_train_ = np.reshape(X_train_, (-1, 1, 2, 128))
         X_val_ = np.reshape(X_val_, (-1, 1, 2, 128))
         
-    elif model_ in ['CLDNN2', 'DenseNet', 'IC-AMCNet', 'ResNet', 'TAD']:
+    elif model_ in ['CLDNN2', 'DenseNet', 'IC-AMCNet', 'ResNet', 'TAD', 'HANet']:
         X_train_ = np.expand_dims(X_train_, axis=3)
         X_val_ = np.expand_dims(X_val_, axis=3)
                                
@@ -224,6 +248,7 @@ for model_, mdl in list(models_dict.items()):
         compile_params = {'optimizer':Adam(),
                           'loss':'categorical_crossentropy',
                           'metrics':['accuracy']}
+    print(X_train_.shape)  
     model = mdl()
     model.compile(**compile_params)
     callbacks=[
