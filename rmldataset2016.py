@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 
-def load_data(filename=r'E:/study/py/final/RML2016.10a/RML2016.10a_dict_optimized.pkl',
+def load_data(filename=r'/root/autodl-tmp/RML2016.10a/RML2016.10a_dict_optimized.pkl',
               idx=None):
     Xd =pickle.load(open(filename,'rb'),encoding='iso-8859-1')#Xd2(22W,2,128)
     mods,snrs = [sorted(list(set([k[j] for k in Xd.keys()]))) for j in [0,1]]

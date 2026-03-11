@@ -51,10 +51,10 @@ from CNN1.CNN2Model import CNN2Model
 # from PETCGDNN import PETCGDNN
 from ResNet.ResNet import ResNet
 # from TAD import MCLDNN_VGN
-from HANet import HANest
+from HANet.HANet import HANet
 
 models_dict = { 
-                # 'CNN1': CNN2Model,
+                'CNN1': CNN2Model,
             #    '1DCNN-PF': DLmodel,
             #     'CGDNet': CGDNN,
             #     'CLDNN': cldnn.CLDNNLikeModel,
@@ -68,14 +68,14 @@ models_dict = {
             #     'MCLDNN': MCLDNN,
             #     'MCNET': MCNET,
             #     'PET-CGDNN': PETCGDNN,
-                'ResNet': ResNet,
+                # 'ResNet': ResNet,
             #     'TAD': MCLDNN_VGN.MCLDNN
-            #     'HANet': HANest
+                # 'HANet': HANet
                 }
 
 idx = []
 for i, idx_to_load in enumerate(["train_idx", "val_idx", "test_idx"]):
-    with open(f'E:/study/py/final/RML2016.10a/{idx_to_load}.pkl', 'rb') as file:
+    with open(f'/root/autodl-tmp/RML2016.10a/{idx_to_load}.pkl', 'rb') as file:
         idx.append(pickle.load(file))
 (mods,snrs,lbl),(X_train,Y_train),(X_val,Y_val),(X_test,Y_test),(train_idx,val_idx,test_idx) = load_data(idx=idx)
 
