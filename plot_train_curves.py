@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 
-RESULTS_DIR = 'results'
-SAVE_DIR = 'train_analysis'
+RESULTS_DIR = 'results_ablate'
+SAVE_DIR = 'train_analysis_ablate'
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 
