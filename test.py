@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf  
 from tensorflow.keras.models import load_model
 from rmldataset2016 import load_data
-from HANet.HANet import HANet, get_ap, get_fft, sum_axis_1 
+from HANet.HANet import HANet, get_ap, get_fft
 
 def l2_normalize(x, axis=-1):
     y = np.sum(x ** 2, axis, keepdims=True)
@@ -99,12 +99,10 @@ def main():
             continue
         
         model = load_model(
-            weight_path, 
+            weight_path,
             custom_objects={
-                'get_ap': get_ap, 
+                'get_ap': get_ap,
                 'get_fft': get_fft,
-                'sum_axis_1': sum_axis_1, # 必须添加这一项
-                'Lambda': tf.keras.layers.Lambda
             },
             safe_mode=False
         )

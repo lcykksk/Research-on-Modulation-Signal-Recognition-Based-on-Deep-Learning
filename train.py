@@ -54,7 +54,7 @@ from ResNet.ResNet import ResNet
 from HANet.HANet import HANet
 
 models_dict = { 
-                'CNN1': CNN2Model,
+                # 'CNN1': CNN2Model,
             #    '1DCNN-PF': DLmodel,
             #     'CGDNet': CGDNN,
             #     'CLDNN': cldnn.CLDNNLikeModel,
@@ -70,7 +70,7 @@ models_dict = {
             #     'PET-CGDNN': PETCGDNN,
                 # 'ResNet': ResNet,
             #     'TAD': MCLDNN_VGN.MCLDNN
-                # 'HANet': HANet
+                'HANet': HANet
                 }
 
 idx = []
