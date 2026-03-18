@@ -52,7 +52,8 @@ def preprocess_data(X, model_name, nsamples=128):
         X_p = np.reshape(X_p, (-1, 1, 2, 128))
     elif model_name in [
         'ResNet', 'HANet', 'CLDNN2', 'DenseNet', 'MCNET',
-        'HANet_only_AP', 'HANet_only_FFT', 'HANet_only_IQ', 'HANet_without_attention'
+        'HANet_only_AP', 'HANet_only_FFT', 'HANet_only_IQ', 'HANet_without_attention',
+        'HANet_LSTM','HANet_IQ_LSTM',
     ]:
         X_p = np.expand_dims(X_p, axis=3)
     elif model_name in ['CNN1']:
@@ -91,7 +92,9 @@ def main():
         'HANet_only_AP',
         'HANet_only_FFT',
         'HANet_only_IQ',
-        'HANet_without_attention'
+        'HANet_without_attention',
+        'HANet_LSTM',
+        'HANet_IQ_LSTM',
     ]
 
     # ===== 3. 路径设置 =====

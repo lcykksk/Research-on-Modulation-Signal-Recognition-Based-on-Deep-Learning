@@ -25,22 +25,23 @@ else:
     print(f"TensorFlow 版本: {tf.__version__}")
     print(f"CUDA 可用: {tf.test.is_built_with_cuda()}")
 
-# ===== 导入四个消融模型 =====
 from HANet_ablation.HANet_ablate_only_IQ import HANet_only_IQ
 from HANet_ablation.HANet_ablate_only_FFT import HANet_only_FFT
 from HANet_ablation.HANet_ablate_without_attention import HANet_without_attention
 from HANet_ablation.HANet_ablate_only_AP import HANet_only_AP
+from HANet_ablation.HANet_ablate_LSTM import HANet_LSTM
+from HANet_ablation.HANet_ablate_IQ_LSTM import HANet_IQ_LSTM
 
 
-# ===== 模型字典 =====
 models_dict = {
-    "HANet_only_IQ": HANet_only_IQ,
-    "HANet_only_AP": HANet_only_AP,
-    "HANet_only_FFT": HANet_only_FFT,
-    "HANet_without_attention": HANet_without_attention,
+    # "HANet_only_IQ": HANet_only_IQ,
+    # "HANet_only_AP": HANet_only_AP,
+    # "HANet_only_FFT": HANet_only_FFT,
+    # "HANet_without_attention": HANet_without_attention,
+    "HANet_LSTM":HANet_LSTM,
+    "HANet_IQ_LSTM":HANet_IQ_LSTM,
 }
 
-# ===== 读取数据索引 =====
 idx = []
 for idx_to_load in ["train_idx", "val_idx", "test_idx"]:
     with open(f"/root/autodl-tmp/RML2016.10a/{idx_to_load}.pkl", "rb") as f:

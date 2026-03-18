@@ -1,7 +1,7 @@
 import onnxruntime as ort
 import numpy as np
 
-session = ort.InferenceSession("embed/HANet_only_IQ.onnx")
+session = ort.InferenceSession("embed/HANet_IQ_LSTM.onnx")
 
 print("Inputs:", session.get_inputs())
 print("Outputs:", session.get_outputs())
